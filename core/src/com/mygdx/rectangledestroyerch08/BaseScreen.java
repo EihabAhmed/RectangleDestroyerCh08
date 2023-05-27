@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputEvent.Type;
@@ -17,6 +18,8 @@ public abstract class BaseScreen implements Screen, InputProcessor {
 
     protected Table uiTable;
 
+    OrthographicCamera camera;
+
     public BaseScreen() {
         mainStage = new Stage();
         uiStage = new Stage();
@@ -25,6 +28,8 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         uiTable.setFillParent(true);
 //        uiTable.setDebug(true);
         uiStage.addActor(uiTable);
+
+        camera = new OrthographicCamera();
 
         initialize();
     }
@@ -40,6 +45,9 @@ public abstract class BaseScreen implements Screen, InputProcessor {
         update(dt);
 
         ScreenUtils.clear(0, 0, 0, 1);
+
+        camera.update();
+        mainStage.getViewport().setCamera(camera);
 
         mainStage.draw();
         uiStage.draw();

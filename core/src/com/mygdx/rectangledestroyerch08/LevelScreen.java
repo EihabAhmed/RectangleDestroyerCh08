@@ -1,12 +1,14 @@
 package com.mygdx.rectangledestroyerch08;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 
 public class LevelScreen extends BaseScreen {
     Paddle paddle;
 
     @Override
     public void initialize() {
+        camera.setToOrtho(false, 800, 600);
         BaseActor background = new BaseActor(0, 0, mainStage);
         background.loadTexture("space.png");
         BaseActor.setWorldBounds(background);
@@ -37,8 +39,10 @@ public class LevelScreen extends BaseScreen {
 
     @Override
     public void update(float dt) {
-        float mouseX = Gdx.input.getX();
-        paddle.setX(mouseX - paddle.getWidth() / 2);
+        Vector3 touchPos = new Vector3();
+        touchPos.set(Gdx.input.getX(), 0, 0);
+        camera.unproject(touchPos);
+        paddle.setX(touchPos.x - paddle.getWidth() / 2);
         paddle.boundToWorld();
     }
 }
